@@ -2,7 +2,6 @@ package com.stockapi.controller;
 
 import com.stockapi.dto.StockDTO;
 import com.stockapi.dto.StockSummaryDTO;
-import com.stockapi.model.Stock;
 import com.stockapi.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class StockController {
         return stockService.getStockDTO(symbol);
     }
 
-    @GetMapping("/stock/all")
+    @GetMapping("/stock")
     public List<StockSummaryDTO> getStockTable(){
         return stockService.getAllStockSummary();
     }

@@ -49,6 +49,7 @@ public class StockService {
         stocks.forEach( (s) -> {
             StockSummaryDTO stockSummaryDTO = modelMapper.map(s, StockSummaryDTO.class);
             stockSummaryDTO.setName(s.getCompany().getName());
+            stockSummaryDTO.setAbout(s.getCompany().getSummary());
             stockSummaryDTO.setChange(4);
             stockSummaryDTO.setChangePercent(3);
 

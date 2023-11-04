@@ -57,7 +57,6 @@ public class StockDiagramController {
         CompanyDTO companyDTO = companyService.getCompanyInfo(symbol);
 
         return ResponseHandler.generateDiagramResponse(stockDTO, companyDTO, stockDiagramDTOs);
-
     }
 
 }

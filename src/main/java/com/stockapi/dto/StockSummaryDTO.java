@@ -12,6 +12,8 @@ public class StockSummaryDTO {
 
     private String name;
 
+    private String about;
+
     private double price;
 
     private double change;
