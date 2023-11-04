@@ -39,7 +39,7 @@ public class StockDiagramService {
 
         stockDiagramDTO.setStockPriceList(stockPriceDTOS);
         stockDiagramDTO.setChange(4);
-        stockDiagramDTO.setChangePercent(3);
+        stockDiagramDTO.setChangePercent(-3);
 
         return stockDiagramDTO;
     }

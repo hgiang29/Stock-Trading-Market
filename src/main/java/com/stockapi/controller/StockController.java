@@ -23,11 +23,6 @@ public class StockController {
         return ResponseEntity.ok("Hello World!");
     }
 
-    @GetMapping("/stock/{symbol}")
-    public StockDTO getStock(@PathVariable String symbol){
-        return stockService.getStockDTO(symbol);
-    }
-
     @GetMapping("/stock")
     public List<StockSummaryDTO> getStockTable(){
         return stockService.getAllStockSummary();

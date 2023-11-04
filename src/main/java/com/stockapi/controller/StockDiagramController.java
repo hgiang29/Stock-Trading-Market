@@ -46,7 +46,7 @@ public class StockDiagramController {
 //        }
 //    }
 
-    @GetMapping("/stock/{symbol}/diagrams")
+    @GetMapping("/stock/{symbol}")
     public ResponseEntity<Object> getAllDiagrams(@PathVariable String symbol){
         List<StockDiagramDTO> stockDiagramDTOs = new ArrayList<>();
         stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(10, symbol)); // 1 day
