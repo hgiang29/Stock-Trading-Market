@@ -16,9 +16,15 @@ public class UserRepositoryTest {
     UserRepository userRepository;
 
     @Test
-    public void createUser(){
-        User user = new User("joe", "dohn", "joe@gmail.com");
+    public void createUser() {
+        User user = new User("mimi", "$2a$12$cSAZpNc/RVZ38xuByxB.cetwOlDrlE1.Jg5LCmG6APSdUqxkSVtnO", "meme@gmail.com");
         userRepository.save(user);
+    }
+
+    @Test
+    public void findUserByEmail() {
+        User user = userRepository.findUserByEmail("joe@gmail.com");
+        System.out.println(user);
     }
 
 }
