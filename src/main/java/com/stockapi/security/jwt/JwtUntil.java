@@ -1,4 +1,4 @@
-package com.stockapi.security;
+package com.stockapi.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,7 +34,7 @@ public class JwtUntil {
         return claimsResolver.apply(claims);
     }
 
-    //for retrieving any information from token we will need the secret key
+    // for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
@@ -47,7 +47,6 @@ public class JwtUntil {
 
     // generate new token
     public String generateToken(UserDetails userDetails) {
-        System.out.println("why ");
         Map<String, Object> claims = new HashMap<>();
         return this.createToken(claims, userDetails.getUsername());
     }

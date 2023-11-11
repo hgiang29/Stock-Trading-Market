@@ -1,8 +1,7 @@
 package com.stockapi.controller;
 
 import com.stockapi.dto.UserLoginDTO;
-import com.stockapi.security.CustomUserDetailService;
-import com.stockapi.security.JwtUntil;
+import com.stockapi.security.jwt.JwtUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,7 +24,7 @@ public class UserController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String createAuthenticaionToken(@RequestBody UserLoginDTO request) throws Exception{
 
         this.authenticate(request.getEmail(), request.getPassword());
