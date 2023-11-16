@@ -1,9 +1,6 @@
 package com.stockapi.helper;
 
-import com.stockapi.dto.CompanyDTO;
-import com.stockapi.dto.StockDTO;
-import com.stockapi.dto.StockDiagramDTO;
-import com.stockapi.dto.StockPriceDTO;
+import com.stockapi.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,6 +18,14 @@ public class ResponseHandler {
         map.put("diagramdetail", stockDiagramDTOs);
         map.put("stock", stockDTO);
         map.put("company", companyDTO);
+
+        return ResponseEntity.ok(map);
+    }
+
+    public static ResponseEntity<Object> generateAuthenticationResponse(UserDTO userDTO, String token) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", userDTO);
+        map.put("token", token);
 
         return ResponseEntity.ok(map);
     }
