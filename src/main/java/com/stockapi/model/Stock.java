@@ -46,4 +46,5 @@ public class Stock {
         return symbol + " " + company.getName() + " price:" + price + " quantity:" + quantity;
     }
 
+
 }

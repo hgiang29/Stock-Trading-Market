@@ -1,6 +1,7 @@
 package com.stockapi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,10 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false)
+    @Min(value = 0, message = "The value must be positive")
+    private double money;
+
     @OneToMany(mappedBy = "user")
     Set<UserStock> inventory;
 
@@ -39,6 +44,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = "customer";
+        this.money = 1000;
     }
 
 

@@ -22,7 +22,7 @@ public class UserStockRepositoryTest {
     EntityManager entityManager;
 
     @Test
-    public void createUserStock(){
+    public void createUserStock() {
         User user = entityManager.find(User.class, 2);
         Stock stock = entityManager.find(Stock.class, "mcsf");
 
@@ -31,10 +31,25 @@ public class UserStockRepositoryTest {
     }
 
     @Test
-    public void readUserInventory(){
+    public void checkIfUserHasStock() {
+        User user = entityManager.find(User.class, 3);
+        Stock stock = entityManager.find(Stock.class, "mcsf");
+
+        UserStock userStock = userStockRepository.findUserStockByUserAndStock(user, stock);
+        if (userStock == null) {
+            System.out.println("user does not have this stock");
+        } else {
+            System.out.println(userStock);
+        }
+    }
+
+    @Test
+    public void readUserInventory() {
         User user = entityManager.find(User.class, 1);
         System.out.println(user.getInventory());
     }
+
+
 
 
 

@@ -17,13 +17,31 @@ public class UserRepositoryTest {
 
     @Test
     public void createUser() {
-        User user = new User("mimi", "$2a$12$cSAZpNc/RVZ38xuByxB.cetwOlDrlE1.Jg5LCmG6APSdUqxkSVtnO", "meme@gmail.com");
+        User user = new User("mimi2", "$2a$12$cSAZpNc/RVZ38xuByxB.cetwOlDrlE1.Jg5LCmG6APSdUqxkSVtnO", "meme2@gmail.com");
         userRepository.save(user);
     }
 
     @Test
     public void findUserByEmail() {
         User user = userRepository.findUserByEmail("joe@gmail.com");
+        System.out.println(user);
+    }
+
+    @Test
+    public void changeUserMoney() {
+        User user = userRepository.findUserByEmail("meme@gmail.com");
+        user.setMoney(1000);
+        userRepository.save(user);
+        System.out.println(user);
+    }
+
+    @Test
+    public void changeUserName() {
+        User user = userRepository.findUserByEmail("joe@gmail.com");
+        System.out.println(user);
+
+        user.setName("newjoe");
+        userRepository.save(user);
         System.out.println(user);
     }
 

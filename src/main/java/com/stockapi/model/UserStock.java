@@ -38,6 +38,14 @@ public class UserStock {
     public String toString() {
         return "user: " + user.getName() +
                 ", stock: " + stock.getSymbol() +
-                ", quantity" + quantity;
+                ", quantity: " + quantity;
+    }
+    
+    public void addUserStockQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+    
+    public void subtractUserStockQuantity(int quantity) {
+        this.quantity -= quantity;
     }
 }
