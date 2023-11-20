@@ -28,7 +28,7 @@ public class StockController {
         return stockService.getAllStockSummary();
     }
 
-    @GetMapping("/stock/buy")
+    @PostMapping("/stock/buy")
     public String buyStock(@RequestBody StockBuySellDTO stockBuySellDTO) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
