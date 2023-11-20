@@ -133,6 +133,17 @@ public class StockService {
         return "buying completed";
     }
 
+    @Transactional
+    public String sellStock(String email, String symbol, int quantity) {
+        /*
+        1. Check if user has this stock, quantity must <= the quantity user has
+        2. Add user money, total stock quantity, decrease stock price
+        3. If this stock user has is 0, remove the stock in user's inventory
+        4. Create new transaction history, stock price history
+         */
+        return "";
+    }
+
 
 
 

@@ -30,7 +30,7 @@ public class UserRepositoryTest {
     @Test
     public void changeUserMoney() {
         User user = userRepository.findUserByEmail("meme@gmail.com");
-        user.setMoney(1000);
+        user.setMoney(10000);
         userRepository.save(user);
         System.out.println(user);
     }

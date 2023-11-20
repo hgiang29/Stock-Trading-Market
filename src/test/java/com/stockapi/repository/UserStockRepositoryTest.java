@@ -45,7 +45,7 @@ public class UserStockRepositoryTest {
 
     @Test
     public void readUserInventory() {
-        User user = entityManager.find(User.class, 1);
+        User user = entityManager.find(User.class, 3);
         System.out.println(user.getInventory());
     }
 
