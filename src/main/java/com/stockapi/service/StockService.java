@@ -57,6 +57,15 @@ public class StockService {
     // hard code for stock change
     public List<StockSummaryDTO> getAllStockSummary(){
         List<Stock> stocks = (List<Stock>) stockRepository.findAll();
+        return getStockSummaryDTOS(stocks);
+    }
+
+    public List<StockSummaryDTO> searchStock(String keyword) {
+        List<Stock> stocks = (List<Stock>) stockRepository.searchStock(keyword);
+        return getStockSummaryDTOS(stocks);
+    }
+
+    private List<StockSummaryDTO> getStockSummaryDTOS(List<Stock> stocks) {
         List<StockSummaryDTO> stockSummaryDTOs = new ArrayList<>();
 
         stocks.forEach( (s) -> {

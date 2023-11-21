@@ -45,4 +45,9 @@ public class StockController {
         return stockService.sellStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
     }
 
+    @GetMapping(value = "/stock", params = "keyword")
+    public List<StockSummaryDTO> searchStock(@RequestParam String keyword) {
+        return stockService.searchStock(keyword);
+    }
+
 }

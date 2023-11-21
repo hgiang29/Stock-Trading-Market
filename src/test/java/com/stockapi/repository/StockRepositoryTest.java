@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
 @DataJpaTest
 @Rollback(value = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -58,6 +60,14 @@ public class StockRepositoryTest {
         Company company = companyRepository.findCompanyByStock(stock.getSymbol());
 
         System.out.println(company);
+    }
+
+    @Test
+    public void searchStock() {
+        String keyword = "m";
+        List<Stock> stocks = stockRepository.searchStock(keyword);
+
+        System.out.println(stocks);
     }
 
 
