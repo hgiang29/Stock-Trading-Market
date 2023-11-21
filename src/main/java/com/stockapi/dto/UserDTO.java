@@ -22,6 +22,8 @@ public class UserDTO {
 
     private String role;
 
+    private double money;
+
     private List<OwningStockDTO> owningStocks;
 
 }

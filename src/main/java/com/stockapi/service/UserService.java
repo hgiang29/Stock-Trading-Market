@@ -83,4 +83,8 @@ public class UserService {
         return userTransactionHistoryDTOS;
     }
 
+    public double getUserMoney(String email) {
+        return userRepository.findUserByEmail(email).getMoney();
+    }
+
 }

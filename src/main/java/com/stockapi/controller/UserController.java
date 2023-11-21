@@ -67,8 +67,13 @@ public class UserController {
         return userService.getUserTransactionHistory(userDetails.getUsername());
     }
 
+    @GetMapping("/user/money")
+    public double getUserMoney() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
 
-
+        return userService.getUserMoney(userDetails.getUsername());
+    }
 
 
 
