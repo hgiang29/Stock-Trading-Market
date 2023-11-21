@@ -37,4 +37,12 @@ public class StockController {
     }
 
 
+    @PostMapping("/stock/sell")
+    public String sellStock(@RequestBody StockBuySellDTO stockBuySellDTO) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        return stockService.sellStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
+    }
+
 }

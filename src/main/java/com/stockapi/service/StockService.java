@@ -112,8 +112,8 @@ public class StockService {
         }
         userStock.setQuantity(userStock.getQuantity() + quantity);
 
-        Date now = new Date();
         // create new transaction history
+        Date now = new Date();
         TransactionHistory transactionHistory = new TransactionHistory(user, stock, quantity, totalPrice, now, true);
 
         user.setMoney(user.getMoney() - totalPrice);
@@ -141,7 +141,50 @@ public class StockService {
         3. If this stock user has is 0, remove the stock in user's inventory
         4. Create new transaction history, stock price history
          */
-        return "";
+
+        User user = userRepository.findUserByEmail(email);
+        Stock stock = stockRepository.findBySymbol(symbol);
+        UserStock userStock = userStockRepository.findUserStockByUserAndStock(user, stock);
+
+        if(userStock == null) {
+            return "You dont have this stock!";
+        }
+
+        if(quantity > userStock.getQuantity()) {
+            return "You dont have this amount of stock!";
+        }
+
+        // change user stock, delete if the amount is 0
+        userStock.setQuantity(userStock.getQuantity() - quantity);
+        if(userStock.getQuantity() == 0){
+            userStockRepository.delete(userStock);
+        } else{
+            userStockRepository.save(userStock);
+        }
+
+        // subtract user money
+        double totalPrice = stock.getPrice() * quantity;
+        user.setMoney(user.getMoney() + totalPrice);
+
+        // change stock
+        stock.setQuantity(stock.getQuantity() - quantity);
+        this.decreaseStockPrice(stock, quantity);
+
+        // create transaction history
+        Date now = new Date();
+        TransactionHistory transactionHistory = new TransactionHistory(user, stock, quantity, totalPrice, now, false);
+
+        // add stock price history
+        StockPrice stockPrice = new StockPrice(stock, now, stock.getPrice());
+
+        // save to database
+        userRepository.save(user);
+        stockRepository.save(stock);
+        transactionHistoryRepository.save(transactionHistory);
+        stockPriceRepository.save(stockPrice);
+
+        return "selling completed";
+
     }
 
 
