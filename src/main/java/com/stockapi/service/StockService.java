@@ -183,8 +183,7 @@ public class StockService {
         transactionHistoryRepository.save(transactionHistory);
         stockPriceRepository.save(stockPrice);
 
-        return "selling completed";
-
+        return "Selling Successfully!";
     }
 
 

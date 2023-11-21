@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @DataJpaTest
 @Rollback(value = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -46,7 +49,21 @@ public class UserStockRepositoryTest {
     @Test
     public void readUserInventory() {
         User user = entityManager.find(User.class, 3);
-        System.out.println(user.getInventory());
+        List<UserStock> stocks = new ArrayList<>(user.getInventory());
+
+        stocks.forEach((s) -> {
+            String str = s.getStock().getSymbol() + " " + s.getStock().getCompany().getName()
+                    + " " + s.getQuantity();
+            System.out.println(str);
+        });
+    }
+
+    @Test
+    public void findUserStocksByUser() {
+        User user = entityManager.find(User.class, 3);
+        List<UserStock> stocks = userStockRepository.findUserStocksByUser(user);
+
+        System.out.println(stocks);
     }
 
 

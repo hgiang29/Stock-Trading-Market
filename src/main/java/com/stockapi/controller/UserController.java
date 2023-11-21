@@ -1,21 +1,20 @@
 package com.stockapi.controller;
 
+import com.stockapi.dto.OwningStockDTO;
 import com.stockapi.dto.UserDTO;
 import com.stockapi.dto.UserLoginDTO;
+import com.stockapi.dto.UserTransactionHistoryDTO;
 import com.stockapi.helper.ResponseHandler;
-import com.stockapi.model.User;
 import com.stockapi.security.jwt.JwtUntil;
 import com.stockapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -51,6 +50,23 @@ public class UserController {
                 .getPrincipal();
         return userDetails.getUsername();
     }
+
+    @GetMapping("/user/inventory")
+    public List<OwningStockDTO> getUserOwningStock() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        return userService.getUserOwningStock(userDetails.getUsername());
+    }
+
+    @GetMapping("/user/history")
+    public List<UserTransactionHistoryDTO> getUserTransactionHistory() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        return userService.getUserTransactionHistory(userDetails.getUsername());
+    }
+
 
 
 

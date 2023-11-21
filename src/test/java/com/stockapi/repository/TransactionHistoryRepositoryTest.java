@@ -40,7 +40,6 @@ public class TransactionHistoryRepositoryTest {
     @Test
     public void readUserTransactionHistory() {
         User user = userRepository.findUserByEmail("meme@gmail.com");
-
         List<TransactionHistory> transactionHistoryList = transactionHistoryRepository.findTransactionHistoriesByUser(user);
         System.out.println(transactionHistoryList);
     }

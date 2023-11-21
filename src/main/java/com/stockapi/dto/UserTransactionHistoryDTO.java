@@ -1,27 +1,25 @@
 package com.stockapi.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserTransactionHistoryDTO {
 
-    private String name;
+    private String symbol;
 
-    private int id;
+    private int quantity;
 
-    private String email;
+    private double price;
 
-    private String role;
+    private String type;
 
-    private List<OwningStockDTO> owningStocks;
-
+    private Date date;
 }
