@@ -19,4 +19,11 @@ public interface StockPriceRepository extends CrudRepository<StockPrice, Integer
             " ORDER BY stock_price.date")
     List<StockPrice> findStockPriceLastXDays(@Param("x") int x, @Param("stockSymbol") String symbol);
 
+    @Query(nativeQuery = true, value = "SELECT price FROM stock_price " +
+            "WHERE stock_price.date >  NOW() - INTERVAL :x DAY" +
+            " AND stock_price.stock = :stockSymbol" +
+            " ORDER BY stock_price.date" +
+            " LIMIT 1")
+    double findFirstStockPriceChange(@Param("x") int x, @Param("stockSymbol") String symbol);
+
 }

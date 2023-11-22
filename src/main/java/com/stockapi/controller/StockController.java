@@ -56,4 +56,9 @@ public class StockController {
         return stockService.createStock(stockCreationDTO);
     }
 
+    @PutMapping("/stock/{symbol}/update")
+    public String updateStock(@PathVariable String symbol, @RequestBody StockCreationDTO stockCreationDTO) {
+        return stockService.updateStock(symbol, stockCreationDTO);
+    }
+
 }

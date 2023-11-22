@@ -48,4 +48,10 @@ public class StockPriceRepositoryTest {
         stockPrices.forEach(System.out::println);
     }
 
+    @Test
+    public void findFistStockPriceChange() {
+        double price = priceRepository.findFirstStockPriceChange(5, "appl");
+        System.out.println(price);
+    }
+
 }

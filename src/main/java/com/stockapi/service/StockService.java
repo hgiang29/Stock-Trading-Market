@@ -36,6 +36,9 @@ public class StockService {
     StockPriceRepository stockPriceRepository;
 
     @Autowired
+    StockDiagramService stockDiagramService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     public StockDTO getStockDTO(String symbol){
@@ -66,18 +69,21 @@ public class StockService {
 
     public List<StockSummaryDTO> searchStock(String keyword) {
         List<Stock> stocks = (List<Stock>) stockRepository.searchStock(keyword);
-        return getStockSummaryDTOS(stocks);
+        return this.getStockSummaryDTOS(stocks);
     }
 
     private List<StockSummaryDTO> getStockSummaryDTOS(List<Stock> stocks) {
         List<StockSummaryDTO> stockSummaryDTOs = new ArrayList<>();
 
         stocks.forEach( (s) -> {
+//           double change = stockDiagramService.getStockPriceChange(1, s.getSymbol());
+//           double changePercent = stockDiagramService.getStockPriceChangePercent(1, s.getSymbol());
+
             StockSummaryDTO stockSummaryDTO = modelMapper.map(s, StockSummaryDTO.class);
             stockSummaryDTO.setName(s.getCompany().getName());
             stockSummaryDTO.setAbout(s.getCompany().getSummary());
-            stockSummaryDTO.setChange(4);
-            stockSummaryDTO.setChangePercent(3);
+            stockSummaryDTO.setChange(3);
+            stockSummaryDTO.setChangePercent(4);
 
             stockSummaryDTOs.add(stockSummaryDTO);
         });
@@ -212,6 +218,27 @@ public class StockService {
         stockRepository.save(stock);
 
         return "Stock " + stockCreationDTO.getSymbol() + " is created successfully!";
+    }
+
+    public String updateStock(String symbol, StockCreationDTO stockCreationDTO) {
+        Stock stock =  stockRepository.findBySymbol(symbol);
+
+        if(stock == null) {
+            return "The market does not have stock with symbol " + stockCreationDTO.getSymbol() + "!";
+        }
+
+        stock.setSymbol(stockCreationDTO.getSymbol());
+        stock.setPrice(stockCreationDTO.getPrice());
+        stock.setQuantity(stock.getQuantity());
+
+        Company company = stock.getCompany();
+        company.setName(stockCreationDTO.getName());
+        company.setSummary(stockCreationDTO.getAbout());
+
+        companyRepository.save(company);
+        stockRepository.save(stock);
+
+        return "Change successfully!";
     }
 
 

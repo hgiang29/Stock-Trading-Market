@@ -2,8 +2,10 @@ package com.stockapi.service;
 
 import com.stockapi.dto.StockDiagramDTO;
 import com.stockapi.dto.StockPriceDTO;
+import com.stockapi.model.Stock;
 import com.stockapi.model.StockPrice;
 import com.stockapi.repository.StockPriceRepository;
+import com.stockapi.repository.StockRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class StockDiagramService {
 
     @Autowired
     private StockPriceRepository stockPriceRepository;
+
+    @Autowired
+    private StockRepository stockRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -32,14 +37,33 @@ public class StockDiagramService {
         return stockPriceDTOs;
     }
 
+    public double getStockPriceChange(int x, String symbol) {
+        Stock stock = stockRepository.findBySymbol(symbol);
+        double priceNow = stock.getPrice();
+        double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+
+        return priceNow - priceFirstChange;
+    }
+
+    public double getStockPriceChangePercent(int x, String symbol) {
+        Stock stock = stockRepository.findBySymbol(symbol);
+        double priceNow = stock.getPrice();
+        double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+
+        double change = priceNow - priceFirstChange;
+        double changePercent = (change / priceFirstChange) * 100;
+
+        return changePercent;
+    }
+
     // hard code stock change
-    public StockDiagramDTO getStockDiagramLastXDays(int x, String symbol){
+    public StockDiagramDTO getStockDiagramLastXDays(int x, String symbol) {
         List<StockPriceDTO> stockPriceDTOS = this.getStockPriceLastXDays(x, symbol);
         StockDiagramDTO stockDiagramDTO = new StockDiagramDTO();
 
         stockDiagramDTO.setStockPriceList(stockPriceDTOS);
-        stockDiagramDTO.setChange(4);
-        stockDiagramDTO.setChangePercent(-3);
+        stockDiagramDTO.setChange(this.getStockPriceChange(x, symbol));
+        stockDiagramDTO.setChangePercent(this.getStockPriceChangePercent(x, symbol));
 
         return stockDiagramDTO;
     }
