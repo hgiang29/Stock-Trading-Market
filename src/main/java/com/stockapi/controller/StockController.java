@@ -1,6 +1,7 @@
 package com.stockapi.controller;
 
 import com.stockapi.dto.StockBuySellDTO;
+import com.stockapi.dto.StockCreationDTO;
 import com.stockapi.dto.StockDTO;
 import com.stockapi.dto.StockSummaryDTO;
 import com.stockapi.service.StockService;
@@ -48,6 +49,11 @@ public class StockController {
     @GetMapping(value = "/stock", params = "keyword")
     public List<StockSummaryDTO> searchStock(@RequestParam String keyword) {
         return stockService.searchStock(keyword);
+    }
+
+    @PostMapping("/stock/new")
+    public String createStock(@RequestBody StockCreationDTO stockCreationDTO) {
+        return stockService.createStock(stockCreationDTO);
     }
 
 }

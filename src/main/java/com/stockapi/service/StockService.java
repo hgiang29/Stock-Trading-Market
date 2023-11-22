@@ -1,5 +1,6 @@
 package com.stockapi.service;
 
+import com.stockapi.dto.StockCreationDTO;
 import com.stockapi.dto.StockDTO;
 import com.stockapi.dto.StockSummaryDTO;
 import com.stockapi.model.*;
@@ -21,6 +22,9 @@ public class StockService {
 
     @Autowired
     UserStockRepository userStockRepository;
+
+    @Autowired
+    CompanyRepository companyRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -195,7 +199,20 @@ public class StockService {
         return "Selling Successfully!";
     }
 
+    public String createStock(StockCreationDTO stockCreationDTO) {
+        if(stockRepository.findBySymbol(stockCreationDTO.getSymbol()) != null) {
+            return "The market already has stock with symbol " + stockCreationDTO.getSymbol() + "!";
+        }
 
+        Company company = new Company(stockCreationDTO.getName(), stockCreationDTO.getAbout());
+        Stock stock = new Stock(stockCreationDTO.getSymbol(), stockCreationDTO.getPrice(), stockCreationDTO.getQuantity());
+        stock.setCompany(company);
+
+        companyRepository.save(company);
+        stockRepository.save(stock);
+
+        return "Stock " + stockCreationDTO.getSymbol() + " is created successfully!";
+    }
 
 
 
