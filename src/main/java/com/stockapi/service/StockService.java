@@ -76,14 +76,14 @@ public class StockService {
         List<StockSummaryDTO> stockSummaryDTOs = new ArrayList<>();
 
         stocks.forEach( (s) -> {
-//           double change = stockDiagramService.getStockPriceChange(1, s.getSymbol());
-//           double changePercent = stockDiagramService.getStockPriceChangePercent(1, s.getSymbol());
+            double change = stockDiagramService.getStockPriceChange(1, s.getSymbol());
+            double changePercent = stockDiagramService.getStockPriceChangePercent(1, s.getSymbol());
 
             StockSummaryDTO stockSummaryDTO = modelMapper.map(s, StockSummaryDTO.class);
             stockSummaryDTO.setName(s.getCompany().getName());
             stockSummaryDTO.setAbout(s.getCompany().getSummary());
-            stockSummaryDTO.setChange(3);
-            stockSummaryDTO.setChangePercent(4);
+            stockSummaryDTO.setChange(change);
+            stockSummaryDTO.setChangePercent(changePercent);
 
             stockSummaryDTOs.add(stockSummaryDTO);
         });
@@ -229,7 +229,7 @@ public class StockService {
 
         stock.setSymbol(stockCreationDTO.getSymbol());
         stock.setPrice(stockCreationDTO.getPrice());
-        stock.setQuantity(stock.getQuantity());
+        stock.setQuantity(stockCreationDTO.getQuantity());
 
         Company company = stock.getCompany();
         company.setName(stockCreationDTO.getName());

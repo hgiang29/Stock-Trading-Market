@@ -24,6 +24,6 @@ public interface StockPriceRepository extends CrudRepository<StockPrice, Integer
             " AND stock_price.stock = :stockSymbol" +
             " ORDER BY stock_price.date" +
             " LIMIT 1")
-    double findFirstStockPriceChange(@Param("x") int x, @Param("stockSymbol") String symbol);
+    Double findFirstStockPriceChange(@Param("x") int x, @Param("stockSymbol") String symbol);
 
 }

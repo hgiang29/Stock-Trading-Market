@@ -40,7 +40,12 @@ public class StockDiagramService {
     public double getStockPriceChange(int x, String symbol) {
         Stock stock = stockRepository.findBySymbol(symbol);
         double priceNow = stock.getPrice();
-        double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+        // because primitive type can not be null, so we need to convert from Double to double, in case the db return null
+        // we return 0
+        Double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+        if(priceFirstChange == null) {
+            return 0;
+        }
 
         return priceNow - priceFirstChange;
     }
@@ -48,7 +53,11 @@ public class StockDiagramService {
     public double getStockPriceChangePercent(int x, String symbol) {
         Stock stock = stockRepository.findBySymbol(symbol);
         double priceNow = stock.getPrice();
-        double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+
+        Double priceFirstChange = stockPriceRepository.findFirstStockPriceChange(x, symbol);
+        if(priceFirstChange == null) {
+            return 0;
+        }
 
         double change = priceNow - priceFirstChange;
         double changePercent = (change / priceFirstChange) * 100;
@@ -67,8 +76,6 @@ public class StockDiagramService {
 
         return stockDiagramDTO;
     }
-
-
 
 
 }
