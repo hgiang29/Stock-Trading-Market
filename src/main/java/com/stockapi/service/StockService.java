@@ -45,25 +45,10 @@ public class StockService {
         Stock stock = stockRepository.findBySymbol(symbol);
         return modelMapper.map(stock, StockDTO.class);
     }
-    public Stock createStock(String symbol, Company company, double price, int quantity){
-        Stock stock = new Stock(symbol, company, price, quantity);
-        return stockRepository.save(stock);
-    }
-
-    public Stock editStock(String symbol, Company company, double price, int quantity){
-
-        Stock stock = stockRepository.findBySymbol(symbol);
-
-        stock.setCompany(company);
-        stock.setQuantity(quantity);
-        stock.setPrice(price);
-
-        return stockRepository.save(stock);
-    }
 
     // hard code for stock change
     public List<StockSummaryDTO> getAllStockSummary(){
-        List<Stock> stocks = (List<Stock>) stockRepository.findAll();
+        List<Stock> stocks = (List<Stock>) stockRepository.findAllOrderByPrice();
         return getStockSummaryDTOS(stocks);
     }
 
