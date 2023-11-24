@@ -5,6 +5,7 @@ import com.stockapi.dto.StockDTO;
 import com.stockapi.dto.StockDiagramDTO;
 import com.stockapi.dto.StockPriceDTO;
 import com.stockapi.helper.ResponseHandler;
+import com.stockapi.model.Stock;
 import com.stockapi.service.CompanyService;
 import com.stockapi.service.StockDiagramService;
 import com.stockapi.service.StockService;
@@ -47,7 +48,7 @@ public class StockDiagramController {
 //    }
 
     @GetMapping("/stock/{symbol}")
-    public ResponseEntity<Object> getAllDiagrams(@PathVariable String symbol){
+    public ResponseEntity<Object> getStockDiagram(@PathVariable String symbol) {
         List<StockDiagramDTO> stockDiagramDTOs = new ArrayList<>();
         stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(10, symbol)); // 1 day
         stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(20, symbol)); // 7 days
@@ -57,6 +58,12 @@ public class StockDiagramController {
         CompanyDTO companyDTO = companyService.getCompanyInfo(symbol);
 
         return ResponseHandler.generateDiagramResponse(stockDTO, companyDTO, stockDiagramDTOs);
+    }
+
+    @GetMapping("/stock/highest_price")
+    public ResponseEntity<Object> getStockDiagramByHighestPrice() {
+        Stock stock = stockService.findStockWithHighestPrice();
+        return this.getStockDiagram(stock.getSymbol());
     }
 
 }

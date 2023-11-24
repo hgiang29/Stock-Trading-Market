@@ -76,6 +76,10 @@ public class StockService {
         return stockSummaryDTOs;
     }
 
+    public Stock findStockWithHighestPrice() {
+        return stockRepository.findStockWithHighestPrice();
+    }
+
     public void increaseStockPrice(Stock stock, int quantity) {
         double newPrice = stock.getPrice() + quantity * 0.1;
         stock.setPrice(newPrice);

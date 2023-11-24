@@ -15,7 +15,10 @@ public interface StockRepository extends CrudRepository<Stock, String> {
             "OR s.company.name LIKE %?1%")
     List<Stock> searchStock(String keyword);
 
-    @Query("SELECT s FROM Stock s ORDER BY s.price")
+    @Query("SELECT s FROM Stock s ORDER BY s.price DESC ")
     List<Stock> findAllOrderByPrice();
+
+    @Query("SELECT s FROM Stock s ORDER BY s.price DESC LIMIT 1")
+    Stock findStockWithHighestPrice();
 
 }
