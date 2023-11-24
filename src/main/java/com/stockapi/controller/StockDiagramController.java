@@ -55,9 +55,8 @@ public class StockDiagramController {
         stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(30, symbol)); // 30 days
 
         StockDTO stockDTO = stockService.getStockDTO(symbol);
-        CompanyDTO companyDTO = companyService.getCompanyInfo(symbol);
 
-        return ResponseHandler.generateDiagramResponse(stockDTO, companyDTO, stockDiagramDTOs);
+        return ResponseHandler.generateDiagramResponse(stockDTO, stockDiagramDTOs);
     }
 
     @GetMapping("/stock/highest_price")

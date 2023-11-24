@@ -11,13 +11,12 @@ import java.util.Map;
 public class ResponseHandler {
 
     public static ResponseEntity<Object> generateDiagramResponse(
-            StockDTO stockDTO, CompanyDTO companyDTO, List<StockDiagramDTO> stockDiagramDTOs){
+            StockDTO stockDTO, List<StockDiagramDTO> stockDiagramDTOs){
 
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("diagramdetail", stockDiagramDTOs);
         map.put("stock", stockDTO);
-        map.put("company", companyDTO);
 
         return ResponseEntity.ok(map);
     }

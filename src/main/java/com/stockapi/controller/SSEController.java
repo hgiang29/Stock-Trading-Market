@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.LocalTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @CrossOrigin
 public class SSEController {
     @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ServerSentEvent<String>> sse() {
-        return Flux.interval(Duration.ofSeconds(1))
+        AtomicInteger i = new AtomicInteger();
+        return Flux.interval(Duration.ofSeconds(2))
                 .map(seq -> ServerSentEvent.<String>builder()
                         .id(String.valueOf(seq))
                         .event("sse-event")
-                        .data("Stock " + LocalTime.now())
+                        .data("Con meo " + i.getAndIncrement())
                         .build());
     }
 
