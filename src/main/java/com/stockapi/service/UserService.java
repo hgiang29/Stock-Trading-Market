@@ -3,6 +3,7 @@ package com.stockapi.service;
 import com.stockapi.dto.OwningStockDTO;
 import com.stockapi.dto.UserDTO;
 import com.stockapi.dto.UserTransactionHistoryDTO;
+import com.stockapi.model.Stock;
 import com.stockapi.model.TransactionHistory;
 import com.stockapi.model.User;
 import com.stockapi.model.UserStock;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -65,6 +67,23 @@ public class UserService {
         });
 
         return owningStocks;
+    }
+
+    public String getUserOwningStockWithHighestPrice(String email) {
+        User user = userRepository.findUserByEmail(email);
+        List<UserStock> owningStocks =  new ArrayList<>(user.getInventory());
+
+        String symbol = "";
+        double highestPrice = 0;
+
+        for(UserStock s : owningStocks) {
+            if (s.getStock().getPrice() > highestPrice) {
+                symbol = s.getStock().getSymbol();
+                highestPrice = s.getStock().getPrice();
+            }
+        }
+
+        return  symbol;
     }
 
     public List<UserTransactionHistoryDTO> getUserTransactionHistory(String email) {

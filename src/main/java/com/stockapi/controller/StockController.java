@@ -6,18 +6,25 @@ import com.stockapi.dto.StockDTO;
 import com.stockapi.dto.StockSummaryDTO;
 import com.stockapi.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StockController {
 
     @Autowired
     StockService stockService;
+
+    private final Sinks.Many<Object> sink = Sinks.many().multicast().onBackpressureBuffer();
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
@@ -34,7 +41,13 @@ public class StockController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
-        return stockService.buyStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
+        String message = stockService.buyStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
+
+        // update live price
+        StockDTO liveStock = stockService.getStockDTO(stockBuySellDTO.getSymbol());
+        sink.tryEmitNext(liveStock);
+
+        return message;
     }
 
 
@@ -43,7 +56,13 @@ public class StockController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
-        return stockService.sellStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
+        String message =  stockService.sellStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
+
+        // update live price
+        StockDTO liveStock = stockService.getStockDTO(stockBuySellDTO.getSymbol());
+        sink.tryEmitNext(liveStock);
+
+        return message;
     }
 
     @GetMapping(value = "/stock", params = "keyword")
@@ -59,6 +78,11 @@ public class StockController {
     @PutMapping("/stock/{symbol}/update")
     public String updateStock(@PathVariable String symbol, @RequestBody StockCreationDTO stockCreationDTO) {
         return stockService.updateStock(symbol, stockCreationDTO);
+    }
+
+    @GetMapping(value = "/stock/live",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<StockDTO>> sse() {
+        return sink.asFlux().map(e -> ServerSentEvent.builder((StockDTO) e).build());
     }
 
 }

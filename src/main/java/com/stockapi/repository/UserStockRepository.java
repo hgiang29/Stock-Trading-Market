@@ -11,8 +11,7 @@ import java.util.List;
 public interface UserStockRepository extends CrudRepository<UserStock, Integer> {
 
     @Query("SELECT s FROM UserStock s WHERE s.user=?1 AND  s.stock=?2")
-    public UserStock findUserStockByUserAndStock(User user, Stock stock);
+    UserStock findUserStockByUserAndStock(User user, Stock stock);
 
-    public List<UserStock> findUserStocksByUser(User user);
-
+    List<UserStock> findUserStocksByUser(User user);
 }

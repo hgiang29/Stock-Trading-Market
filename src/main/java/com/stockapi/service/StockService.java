@@ -76,10 +76,6 @@ public class StockService {
         return stockSummaryDTOs;
     }
 
-    public Stock findStockWithHighestPrice() {
-        return stockRepository.findStockWithHighestPrice();
-    }
-
     public void increaseStockPrice(Stock stock, int quantity) {
         double newPrice = stock.getPrice() + quantity * 0.1;
         stock.setPrice(newPrice);
@@ -138,7 +134,7 @@ public class StockService {
         userStockRepository.save(userStock);
         stockPriceRepository.save(stockPrice);
 
-        return "buying completed";
+        return "Buying successfully!";
     }
 
     @Transactional

@@ -9,9 +9,12 @@ import com.stockapi.model.Stock;
 import com.stockapi.service.CompanyService;
 import com.stockapi.service.StockDiagramService;
 import com.stockapi.service.StockService;
+import com.stockapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +33,9 @@ public class StockDiagramController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    UserService userService;
 
 //    @GetMapping("/stock/{symbol}/diagram/{days}")
 //    public List<StockPriceDTO> getStockPriceDiagram(@PathVariable String symbol, @PathVariable int days){
@@ -50,8 +56,8 @@ public class StockDiagramController {
     @GetMapping("/stock/{symbol}")
     public ResponseEntity<Object> getStockDiagram(@PathVariable String symbol) {
         List<StockDiagramDTO> stockDiagramDTOs = new ArrayList<>();
-        stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(10, symbol)); // 1 day
-        stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(20, symbol)); // 7 days
+        stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(1, symbol)); // 1 day
+        stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(7, symbol)); // 7 days
         stockDiagramDTOs.add(stockDiagramService.getStockDiagramLastXDays(30, symbol)); // 30 days
 
         StockDTO stockDTO = stockService.getStockDTO(symbol);
@@ -59,10 +65,13 @@ public class StockDiagramController {
         return ResponseHandler.generateDiagramResponse(stockDTO, stockDiagramDTOs);
     }
 
-    @GetMapping("/stock/highest_price")
+    @GetMapping("/user/inventory/highest_stock")
     public ResponseEntity<Object> getStockDiagramByHighestPrice() {
-        Stock stock = stockService.findStockWithHighestPrice();
-        return this.getStockDiagram(stock.getSymbol());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        String symbol = userService.getUserOwningStockWithHighestPrice(userDetails.getUsername());
+        return this.getStockDiagram(symbol);
     }
 
 }
