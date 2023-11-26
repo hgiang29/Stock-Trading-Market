@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+
 public class StockController {
 
     @Autowired
@@ -80,6 +81,7 @@ public class StockController {
         return stockService.updateStock(symbol, stockCreationDTO);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/stock/live",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ServerSentEvent<StockDTO>> sse() {
         return sink.asFlux().map(e -> ServerSentEvent.builder((StockDTO) e).build());
