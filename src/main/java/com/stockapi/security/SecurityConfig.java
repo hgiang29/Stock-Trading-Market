@@ -59,7 +59,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/login", "/stock/live").permitAll()
+                        auth -> auth.requestMatchers("/login", "/stock/live", "/stock", "/stock/{symbol}").permitAll()
                                 .anyRequest().authenticated()
                 )
 

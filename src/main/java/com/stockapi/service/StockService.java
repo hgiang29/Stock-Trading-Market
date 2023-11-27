@@ -57,6 +57,15 @@ public class StockService {
         return this.getStockSummaryDTOS(stocks);
     }
 
+    public StockSummaryDTO getStockSummary(String symbol) {
+        Stock s = stockRepository.findBySymbol(symbol);
+        List<Stock> stocks = new ArrayList<>();
+        stocks.add(s);
+
+        List<StockSummaryDTO> stockSummaryDTOS = this.getStockSummaryDTOS(stocks);
+        return stockSummaryDTOS.get(0);
+    }
+
     private List<StockSummaryDTO> getStockSummaryDTOS(List<Stock> stocks) {
         List<StockSummaryDTO> stockSummaryDTOs = new ArrayList<>();
 

@@ -44,7 +44,7 @@ public class StockController {
         String message = stockService.buyStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
 
         // update live price
-        StockDTO liveStock = stockService.getStockDTO(stockBuySellDTO.getSymbol());
+        StockSummaryDTO liveStock = stockService.getStockSummary(stockBuySellDTO.getSymbol());
         sink.tryEmitNext(liveStock);
 
         return message;
@@ -59,7 +59,7 @@ public class StockController {
         String message =  stockService.sellStock(userDetails.getUsername(), stockBuySellDTO.getSymbol(), stockBuySellDTO.getQuantity());
 
         // update live price
-        StockDTO liveStock = stockService.getStockDTO(stockBuySellDTO.getSymbol());
+        StockSummaryDTO liveStock = stockService.getStockSummary(stockBuySellDTO.getSymbol());
         sink.tryEmitNext(liveStock);
 
         return message;
@@ -81,8 +81,8 @@ public class StockController {
     }
 
     @GetMapping(value = "/stock/live",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<StockDTO>> sse() {
-        return sink.asFlux().map(e -> ServerSentEvent.builder((StockDTO) e).build());
+    public Flux<ServerSentEvent<StockSummaryDTO>> sse() {
+        return sink.asFlux().map(e -> ServerSentEvent.builder((StockSummaryDTO) e).build());
     }
 
 }
